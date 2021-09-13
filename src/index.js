@@ -3,7 +3,7 @@ const { Client, MessageMedia } = require('whatsapp-web.js');
 const ffmpeg = require('fluent-ffmpeg')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
-const SESSION_FILE_PATH = '../session.json';
+const SESSION_FILE_PATH = './session.json';
 
 // Comandos Bot
 const { menu } = require('./app/menu')
@@ -22,7 +22,7 @@ const msg = "BOT ENCENDIDO"
 let sessionData;
 
 if (fs.existsSync(SESSION_FILE_PATH)) {
-    sessionData = require(SESSION_FILE_PATH);
+    sessionData = require(`.${SESSION_FILE_PATH }`);
 }
 
 const cliente = new Client({
@@ -54,7 +54,6 @@ function startBot() {
 
     cliente.on('authenticated', session => {
         sessionData = session;
-
         fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session),
             err => {
                 if (err) {
@@ -162,3 +161,31 @@ function startBot() {
 }
 
 startBot()
+
+
+// const withOutSession = () => {
+
+//     cliente = new Client();
+
+//     cliente.on('qr', qr => {
+//         qrcode.generate(qr, { small: true })
+//     })
+
+//     cliente.on('authenticated', session => {
+//         sessionData = session;
+//         fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session),
+//             err => {
+//                 if (err) {
+//                     console.error(err);
+//                 }
+//             })
+//     })
+
+//     cliente.initialize();
+// }
+
+// const withSession = () => {
+
+// }
+
+// (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
