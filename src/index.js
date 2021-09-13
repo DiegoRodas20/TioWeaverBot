@@ -38,7 +38,20 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
 }
 
 const cliente = new Client({
-    session: sessionData
+    session: sessionData,
+    puppeteer: {
+        headless: true,
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', // <- this one doesn't works in Windows
+            '--disable-gpu'
+        ],
+    },
 });
 
 const getRandom = (ext) => {
@@ -186,31 +199,3 @@ function startBot() {
 }
 
 startBot()
-
-
-// const withOutSession = () => {
-
-//     cliente = new Client();
-
-//     cliente.on('qr', qr => {
-//         qrcode.generate(qr, { small: true })
-//     })
-
-//     cliente.on('authenticated', session => {
-//         sessionData = session;
-//         fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session),
-//             err => {
-//                 if (err) {
-//                     console.error(err);
-//                 }
-//             })
-//     })
-
-//     cliente.initialize();
-// }
-
-// const withSession = () => {
-
-// }
-
-// (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
