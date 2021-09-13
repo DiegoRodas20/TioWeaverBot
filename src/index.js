@@ -3,7 +3,7 @@ const { Client, MessageMedia } = require('whatsapp-web.js');
 const ffmpeg = require('fluent-ffmpeg')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
-const SESSION_FILE_PATH = './session.json';
+const SESSION_FILE_PATH = '../session.json';
 
 // Comandos Bot
 const { menu } = require('./app/menu')
