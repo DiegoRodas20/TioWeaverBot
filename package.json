@@ -10,10 +10,8 @@
   "author": "EL TIO WEAVER",
   "license": "ISC",
   "dependencies": {
-    "@adiwajshing/baileys": "^3.5.2",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
-    "heroku": "^7.59.0",
     "http": "0.0.1-security",
     "qrcode-terminal": "^0.12.0",
     "socket.io": "^4.2.0",
