@@ -93,10 +93,10 @@ function startBot() {
         console.error('Hubo un fallo en la autenticacion', msg);
     })
 
-    cliente.on('group_join', per => {
+    cliente.on('group_join', async (per) => {
 
         // const chat = await msg.getChat();
-        const user = per.getContact();
+        const user = await per.getContact();
 
         const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
         var mensaje = `HOLAAAA @${user.id.user}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.\n\n VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!`
@@ -141,7 +141,7 @@ function startBot() {
             else if (msg.body === `${prefijo}mipremio`) {
 
                 const i = Math.floor(Math.random() * (6 - 1)) + 1;
-                const media = MessageMedia.fromFilePath(`src/assets/img/porno${i}.mp3`);
+                const media = MessageMedia.fromFilePath(`src/assets/img/porno${i}.jpeg`);
                 cliente.sendMessage(msg.from, media);
             }
 
@@ -188,7 +188,7 @@ function startBot() {
                     text += `@${participant.id.user} `;
                 }
 
-                await chat.sendMessage(msg.from, text, { mentions });
+                await chat.sendMessage(text, { mentions });
             }
 
             else if (msg.body.toLowerCase().includes('bot')) {
