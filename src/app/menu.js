@@ -22,11 +22,6 @@ ESTOY EN DESARROLLO MI REY 🙈
   ╠ ○  ${prefijo}buenosdias
   ╚ ○  ${prefijo}mipremio
 
-◉ *GRUPO*
-  ║
-  ╠ Integrantes de la Weaver Armada
-  ╚ ○  ${prefijo}all
-
 ◉ *CREAR STICKERS*
   ║
   ╚ ○  ${prefijo}sticker
@@ -60,3 +55,7 @@ exports.menu = menu
 //   ║
 //   ╠ Hijos de la Weaver Armada
 //   ╚ ○  ${prefijo}hijos
+// ◉ *GRUPO*
+//   ║
+//   ╠ Integrantes de la Weaver Armada
+//   ╚ ○  ${prefijo}all

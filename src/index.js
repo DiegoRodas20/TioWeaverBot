@@ -174,22 +174,22 @@ function startBot() {
                 cliente.sendMessage(msg.from, media);
             }
 
-            else if (msg.body === `${prefijo}all`) {
+            // else if (msg.body === `${prefijo}all`) {
 
-                const chat = await msg.getChat();
+            //     const chat = await msg.getChat();
 
-                let text = "";
-                let mentions = [];
+            //     let text = "";
+            //     let mentions = [];
 
-                for (let participant of chat.participants) {
-                    const contact = await cliente.getContactById(participant.id._serialized);
+            //     for (let participant of chat.participants) {
+            //         const contact = await cliente.getContactById(participant.id._serialized);
 
-                    mentions.push(contact);
-                    text += `@${participant.id.user} `;
-                }
+            //         mentions.push(contact);
+            //         text += `@${participant.id.user} `;
+            //     }
 
-                await chat.sendMessage(text, { mentions });
-            }
+            //     await chat.sendMessage(text, { mentions });
+            // }
 
             else if (msg.body.toLowerCase().includes('bot')) {
 
