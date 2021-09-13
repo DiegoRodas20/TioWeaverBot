@@ -5,7 +5,6 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio.listen(server)
 
 //APIS
 const { Client, MessageMedia } = require('whatsapp-web.js');
