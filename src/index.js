@@ -1,3 +1,12 @@
+const express = require('express');
+const socketio = require('socket.io');
+const http = require('http');
+const path = require('path');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio.listen(server)
+
 //APIS
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const ffmpeg = require('fluent-ffmpeg')
@@ -21,8 +30,12 @@ const number = "930360511"
 const msg = "BOT ENCENDIDO"
 let sessionData;
 
+app.set('port', process.env.PORT || 3000);
+app.use(express.static(path.join(__dirname, 'public')));
+// require('./')
+
 if (fs.existsSync(SESSION_FILE_PATH)) {
-    sessionData = require(`.${SESSION_FILE_PATH }`);
+    sessionData = require(`.${SESSION_FILE_PATH}`);
 }
 
 const cliente = new Client({
@@ -126,29 +139,42 @@ function startBot() {
 
             else if (msg.body === `${prefijo}sticker`) {
 
-                if (msg.hasMedia && msg.type === '') {
+                if (msg.hasMedia && msg.type === 'image') {
 
                     const media = await msg.downloadMedia();
                     cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true });
                 }
-
+                else if (msg.hasMedia && msg.type != 'image') {
+                    var mensaje = '❌ Solo Imagenes ps perro';
+                    cliente.sendMessage(msg.from, mensaje)
+                }
                 else {
-                    var mensaje = 'Debes enviar una imagen mi rey!!';
+                    var mensaje = '❌ Porque eres bruto tio?, PIENSA MIERDA DEBES ENVIAR UNA IMAGEN';
                     cliente.sendMessage(msg.from, mensaje)
                 }
 
             }
 
             else if (msg.body === `${prefijo}toimg`) {
+
                 if (msg.hasMedia && msg.type === 'sticker') {
                     const media = await msg.downloadMedia();
-                    cliente.sendMessage(msg.from, media, { send: true });
+                    cliente.sendMessage(msg.from, media, { sendAudioAsVoice: true });
                 }
                 else {
                     var mensaje = 'Tienes que enviar un sticker mi wraith king'
                     cliente.sendMessage(msg.from, mensaje)
                 }
             }
+
+            else if (msg.body.includes(`${prefijo}tomp3`)) {
+
+                var link = msg.links.link;
+
+                const media = MessageMedia.fromUrl(link);
+                cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true })
+            }
+
             else if (msg.body.toLowerCase().includes('bot')) {
 
                 const i = Math.floor(Math.random() * (5 - 1)) + 1;
