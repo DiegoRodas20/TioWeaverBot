@@ -9,6 +9,8 @@ var mensaje = `
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}sticker
+  ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}all
   ╚ ○  ${prefijo}mipremio
 `
 return mensaje;

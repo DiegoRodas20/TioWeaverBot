@@ -69,8 +69,10 @@ function startBot() {
     cliente.on('ready', () => {
         console.log('El Cliente esta listo')
 
-        let chatId = countryCode + number + "@c.us";
-        cliente.sendMessage(chatId, msg).then(Response => {
+        // let chatId = countryCode + number + "@c.us";
+        let chatgrupoId = '51930360511-1604634954@g.us';
+
+        cliente.sendMessage(chatgrupoId, msg).then(Response => {
             if (Response.id.fromMe) {
                 console.log('El mensaje fue enviado')
             }
@@ -93,10 +95,13 @@ function startBot() {
 
     cliente.on('group_join', per => {
 
-        const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
-        var mensaje = `HOLAAAA @${per.author.replace('@c.us', '')}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada \n\n Recuerda leer las reglas del grupo y \n\n apoyar en todos los Streams mi rey!!`
+        // const chat = await msg.getChat();
+        const user = per.getContact();
 
-        cliente.sendMessage(per.chatId, mensaje);
+        const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
+        var mensaje = `HOLAAAA @${user.id.user}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.\n\n VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!`
+
+        cliente.sendMessage(per.chatId, mensaje, { mentions: [user] });
         cliente.sendMessage(per.chatId, media);
     })
 
@@ -111,10 +116,7 @@ function startBot() {
 
     cliente.on('message', async (msg) => {
 
-        console.log(msg)
-
         if (msg.from === '51930360511-1604634954@g.us') {
-
 
             if (msg.body === `${prefijo}menu`) {
 
@@ -138,9 +140,8 @@ function startBot() {
 
             else if (msg.body === `${prefijo}mipremio`) {
 
-                // const media = new MessageMedia('https://youtu.be/YzKM5g_FwYU?list=RDMM', base64Image);
-                // const media = MessageMedia.fromUrl('https://youtu.be/YzKM5g_FwYU?list=RDMM');
-                const media = MessageMedia.fromFilePath('src/assets/img/porno1.jpg');
+                const i = Math.floor(Math.random() * (6 - 1)) + 1;
+                const media = MessageMedia.fromFilePath(`src/assets/img/porno${i}.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
 
@@ -167,24 +168,27 @@ function startBot() {
 
             }
 
-            else if (msg.body === `${prefijo}toimg`) {
+            else if (msg.body === `${prefijo}buenosdias`) {
 
-                if (msg.hasMedia && msg.type === 'sticker') {
-                    const media = await msg.downloadMedia();
-                    cliente.sendMessage(msg.from, media, { sendAudioAsVoice: true });
-                }
-                else {
-                    var mensaje = 'Tienes que enviar un sticker mi wraith king'
-                    cliente.sendMessage(msg.from, mensaje)
-                }
+                const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
+                cliente.sendMessage(msg.from, media);
             }
 
-            else if (msg.body.includes(`${prefijo}tomp3`)) {
+            else if (msg.body === `${prefijo}all`) {
 
-                var link = msg.links.link;
+                const chat = await msg.getChat();
 
-                const media = MessageMedia.fromUrl(link);
-                cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true })
+                let text = "";
+                let mentions = [];
+
+                for (let participant of chat.participants) {
+                    const contact = await cliente.getContactById(participant.id._serialized);
+
+                    mentions.push(contact);
+                    text += `@${participant.id.user} `;
+                }
+
+                await chat.sendMessage(msg.from, text, { mentions });
             }
 
             else if (msg.body.toLowerCase().includes('bot')) {
@@ -199,3 +203,12 @@ function startBot() {
 }
 
 startBot()
+
+
+            // else if (msg.body.includes(`${prefijo}tomp3`)) {
+
+            //     var link = msg.links.link;
+
+            //     const media = MessageMedia.fromUrl(link);
+            //     cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true })
+            // }

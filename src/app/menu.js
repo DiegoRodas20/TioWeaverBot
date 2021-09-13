@@ -19,7 +19,13 @@ ESTOY EN DESARROLLO MI REY 🙈
   ╠ ○  ${prefijo}stream
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}bot
+  ╠ ○  ${prefijo}buenosdias
   ╚ ○  ${prefijo}mipremio
+
+◉ *GRUPO*
+  ║
+  ╠ Integrantes de la Weaver Armada
+  ╚ ○  ${prefijo}all
 
 ◉ *CREAR STICKERS*
   ║
