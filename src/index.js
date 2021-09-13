@@ -7,12 +7,12 @@ const ffmpeg = require('fluent-ffmpeg')
 const { WAConnection, MessageType, Presence, GroupSettingChange } = require('@adiwajshing/baileys')
 
 // Comandos Bot
-const { menu } = require('./src/app/menu')
-const { comandos } = require('./src/app/comandos');
-const { stream } = require('./src/app/stream');
-const { premio } = require('./src/app/premio');
-const { grupos } = require('./src/app/grupos');
-const { bot } = require('./src/app/bot');
+const { menu } = require('./app/menu')
+const { comandos } = require('./app/comandos');
+const { stream } = require('./app/stream');
+const { premio } = require('./app/premio');
+const { grupos } = require('./app/grupos');
+const { bot } = require('./app/bot');
 const { exec } = require('child_process');
 
 const bienvenido = JSON.parse(fs.readFileSync('./database/json/bienvenido.json'))
