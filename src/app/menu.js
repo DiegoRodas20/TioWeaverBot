@@ -20,6 +20,7 @@ ESTOY EN DESARROLLO MI REY 🙈
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}motivacion
   ╚ ○  ${prefijo}mipremio
 
 ◉ *CREAR STICKERS*

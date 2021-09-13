@@ -10,6 +10,7 @@ var mensaje = `
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}sticker
   ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}motivacion
   ╚ ○  ${prefijo}mipremio
 `
 return mensaje;

@@ -26,7 +26,7 @@ const bienvenido = JSON.parse(fs.readFileSync('./database/json/bienvenido.json')
 var prefijo = '*'
 const countryCode = "51"
 const number = "930360511"
-const msg = "BOT ENCENDIDO"
+const msg = "BOT ACTIVO CONCHASUMARE "
 let sessionData;
 
 app.set('port', process.env.PORT || 3000);
@@ -94,24 +94,26 @@ function startBot() {
     })
 
     cliente.on('group_join', async (per) => {
+        if (per.chatId === '51930360511-1604634954@g.us') {
+            // const chat = await msg.getChat();
+            const user = await per.getContact();
 
-        // const chat = await msg.getChat();
-        const user = await per.getContact();
+            const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
+            var mensaje = `HOLAAAA @${user.id.user}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.\n\n VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!`
 
-        const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
-        var mensaje = `HOLAAAA @${user.id.user}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.\n\n VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!`
-
-        cliente.sendMessage(per.chatId, mensaje, { mentions: [user] });
-        cliente.sendMessage(per.chatId, media);
+            cliente.sendMessage(per.chatId, mensaje, { mentions: [user] });
+            cliente.sendMessage(per.chatId, media);
+        }
     })
 
     cliente.on('group_leave', per => {
+        if (per.chatId === '51930360511-1604634954@g.us') {
+            const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
+            var mensaje = `Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!! `
 
-        const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
-        var mensaje = `Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!! `
-
-        cliente.sendMessage(per.chatId, mensaje);
-        cliente.sendMessage(per.chatId, media);
+            cliente.sendMessage(per.chatId, mensaje);
+            cliente.sendMessage(per.chatId, media);
+        }
     })
 
     cliente.on('message', async (msg) => {
@@ -171,6 +173,12 @@ function startBot() {
             else if (msg.body === `${prefijo}buenosdias`) {
 
                 const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
+                cliente.sendMessage(msg.from, media);
+            }
+
+            else if (msg.body === `${prefijo}motivacion`) {
+
+                const media = MessageMedia.fromFilePath(`src/assets/audio/estudiasonso.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
 
