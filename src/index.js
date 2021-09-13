@@ -1,35 +1,32 @@
-const fs = require('fs');
-const qrcode = require('qrcode-terminal');
+//APIS
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const ffmpeg = require('fluent-ffmpeg')
-
-// Libreria Whatsapp
-const { WAConnection, MessageType, Presence, GroupSettingChange } = require('@adiwajshing/baileys')
+const qrcode = require('qrcode-terminal')
+const fs = require('fs');
+const SESSION_FILE_PATH = './session.json';
 
 // Comandos Bot
 const { menu } = require('./app/menu')
 const { comandos } = require('./app/comandos');
 const { stream } = require('./app/stream');
-const { premio } = require('./app/premio');
 const { grupos } = require('./app/grupos');
 const { bot } = require('./app/bot');
-const { exec } = require('child_process');
 
 const bienvenido = JSON.parse(fs.readFileSync('./database/json/bienvenido.json'))
-var prefijo = '*'
 
+// Variables
+var prefijo = '*'
 const countryCode = "51"
 const number = "930360511"
 const msg = "BOT ENCENDIDO"
-
 let sessionData;
 
-// if (fs.existsSync(sessionFilePath)) {
-//     sessionData = require(sessionFilePath)
-// }
+if (fs.existsSync(SESSION_FILE_PATH)) {
+    sessionData = require(SESSION_FILE_PATH);
+}
 
 const cliente = new Client({
-    session: sessionData,
+    session: sessionData
 });
 
 const getRandom = (ext) => {
@@ -58,8 +55,7 @@ function startBot() {
     cliente.on('authenticated', session => {
         sessionData = session;
 
-        fs.writeFile(
-            sessionFilePath, JSON.stringify(session),
+        fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session),
             err => {
                 if (err) {
                     console.error(err);
@@ -92,7 +88,7 @@ function startBot() {
     cliente.on('message', async (msg) => {
 
         console.log(msg)
-        
+
         if (msg.from === '51930360511-1604634954@g.us') {
 
 
@@ -164,7 +160,5 @@ function startBot() {
         }
     })
 }
-
-
 
 startBot()
