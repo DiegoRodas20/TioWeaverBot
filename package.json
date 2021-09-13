@@ -2,10 +2,10 @@
   "name": "tioweaverbot",
   "version": "1.0.0",
   "description": "TioWeaverBot",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js"
+    "start": "node src/app.js"
   },
   "author": "EL TIO WEAVER",
   "license": "ISC",
