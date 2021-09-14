@@ -26,6 +26,14 @@ ESTOY EN DESARROLLO MI REY 🙈
 ◉ *CREAR STICKERS*
   ║
   ╚ ○  ${prefijo}sticker
+
+◉ *GRUPO*
+  ║
+  ╠ Lideres de la Secta
+  ╠ ○  ${prefijo}admins
+  ║
+  ╠ Llamado General
+  ╚ ○  ${prefijo}all
  `;
 
   return mensaje;
@@ -37,9 +45,6 @@ exports.menu = menu
 //   ║
 //   ╚ ○  Registrate con el comando ${prefijo}cpp y tu nombre
 
-// ◉ | CREAR STICKERS |
-//   ║
-//   ╚ ○  ${prefijo}sticker
 
 // ◉ | CONVERTIDORES |
 //   ║     
@@ -48,15 +53,3 @@ exports.menu = menu
 //   ║
 //   ╠ De Video a MP3
 //   ╚ ○  ${prefijo}tomp3
-
-// ◉ | GRUPO |
-//   ║
-//   ╠ Lideres de la Weaver Armada
-//   ╠ ○  ${prefijo}adminlist
-//   ║
-//   ╠ Hijos de la Weaver Armada
-//   ╚ ○  ${prefijo}hijos
-// ◉ *GRUPO*
-//   ║
-//   ╠ Integrantes de la Weaver Armada
-//   ╚ ○  ${prefijo}all

@@ -9,6 +9,8 @@ var mensaje = `
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}sticker
+  ╠ ○  ${prefijo}admins
+  ╠ ○  ${prefijo}all
   ╠ ○  ${prefijo}buenosdias
   ╠ ○  ${prefijo}motivacion
   ╚ ○  ${prefijo}mipremio

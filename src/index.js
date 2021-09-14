@@ -117,7 +117,7 @@ function startBot() {
     })
 
     cliente.on('message', async (msg) => {
-
+        console.log(msg)
         if (msg.from === '51930360511-1604634954@g.us') {
 
             if (msg.body === `${prefijo}menu`) {
@@ -178,26 +178,64 @@ function startBot() {
 
             else if (msg.body === `${prefijo}motivacion`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/estudiasonso.mp3`);
+                const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
 
-            // else if (msg.body === `${prefijo}all`) {
+            else if (msg.body === `${prefijo}all`) {
 
-            //     const chat = await msg.getChat();
+                const authorId = msg.author || message.from;
+                const chat = await msg.getChat();
+                let isAdmin = true
 
-            //     let text = "";
-            //     let mentions = [];
+                let text = "";
+                let mentions = [];
 
-            //     for (let participant of chat.participants) {
-            //         const contact = await cliente.getContactById(participant.id._serialized);
+                if (chat.isGroup) {
 
-            //         mentions.push(contact);
-            //         text += `@${participant.id.user} `;
-            //     }
+                    for (let participant of chat.participants) {
+                        if (participant.id._serialized === authorId && !participant.isAdmin) {
+                            msg.reply(`❌ El comando solo puede ser usado por admins ❌`);
+                            isAdmin = false
+                            break;
+                        }
+                        else {
+                            const contact = await cliente.getContactById(participant.id._serialized);
 
-            //     await chat.sendMessage(text, { mentions });
-            // }
+                            mentions.push(contact);
+                            text += `@${participant.id.user} `;
+                        }
+                    }
+
+                    if (isAdmin) {
+                        await chat.sendMessage(text, { mentions });
+                    }
+                }
+            }
+
+            else if (msg.body === `${prefijo}admins`) {
+                
+                const chat = await msg.getChat();
+
+                let text = "";
+                let mentions = [];
+
+                if (chat.isGroup) {
+
+                    for (let participant of chat.participants) {
+
+                        if (participant.isAdmin) {
+                            const contact = await cliente.getContactById(participant.id._serialized);
+
+                            mentions.push(contact);
+                            text += `@${participant.id.user} `;
+                        }
+                    }
+
+                    await chat.sendMessage(text, { mentions });
+                }
+
+            }
 
             else if (msg.body.toLowerCase().includes('bot')) {
 
@@ -220,3 +258,13 @@ startBot()
             //     const media = MessageMedia.fromUrl(link);
             //     cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true })
             // }
+
+
+                // for (let participant of chat.participants) {
+                //     const contact = await cliente.getContactById(participant.id._serialized);
+
+                //     mentions.push(contact);
+                //     text += `@${participant.id.user} `;
+                // }
+
+                // await chat.sendMessage(text, { mentions });
