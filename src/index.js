@@ -6,32 +6,36 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 
-//APIS
+// APIS
 const { Client, MessageMedia } = require('whatsapp-web.js');
-const ffmpeg = require('fluent-ffmpeg')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
 const SESSION_FILE_PATH = './session.json';
 
-// Comandos Bot
-const { menu } = require('./app/menu')
-const { comandos } = require('./app/comandos');
-const { stream } = require('./app/stream');
-const { grupos } = require('./app/grupos');
-const { bot } = require('./app/bot');
+// Comandos General
+const { stream } = require('./app/comandosgeneral/stream');
+const { grupos } = require('./app/comandosgeneral/grupos');
+const { bot } = require('./app/comandosgeneral/bot');
 
-const bienvenido = JSON.parse(fs.readFileSync('./database/json/bienvenido.json'))
+// Comandos Grupo Principal
+const { menuPrincipal } = require('./app/grupoprincipal/menuprincipal')
+const { comandosPrincipal } = require('./app/grupoprincipal/comandosprincipal');
 
-// Variables
+// Comandos Grupo Programacion
+const { menuProgramacion } = require('./app/grupoprogramacion/menuprogramacion')
+const { comandosProgramacion } = require('./app/grupoprogramacion/comandosprogramacion')
+const { cuentaProgramacion } = require('./app/grupoprogramacion/cuentaprogramacion')
+const { cursosProgramacion } = require('./app/grupoprogramacion/cursosprogramacion')
+const { java } = require('./app/grupoprogramacion/java')
+
+// Variables Globales
 var prefijo = '*'
-const countryCode = "51"
-const number = "930360511"
-const msg = "BOT ACTIVO CONCHASUMARE "
+const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
 let sessionData;
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, 'public')));
-// require('./')
+
 
 if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
@@ -54,10 +58,6 @@ const cliente = new Client({
     },
 });
 
-const getRandom = (ext) => {
-    return `${Math.floor(Math.random() * 10000)}${ext}`
-}
-
 function startBot() {
 
     cliente.initialize();
@@ -69,14 +69,23 @@ function startBot() {
     cliente.on('ready', () => {
         console.log('El Cliente esta listo')
 
-        // let chatId = countryCode + number + "@c.us";
-        let chatgrupoId = '51930360511-1604634954@g.us';
+        let grupoGeneral = '51930360511-1604634954@g.us';
+        let grupoProgra = '51930360511-1615519188@g.us';
 
-        cliente.sendMessage(chatgrupoId, msg).then(Response => {
+        cliente.sendMessage(grupoGeneral, msg).then(Response => {
             if (Response.id.fromMe) {
-                console.log('El mensaje fue enviado')
+                console.log('El mensaje fue enviado al grupo general')
             }
         })
+        cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
+
+        cliente.sendMessage(grupoProgra, msg).then(Response => {
+            if (Response.id.fromMe) {
+                console.log('El mensaje fue enviado al grupo de programación')
+            }
+        })
+
+        cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
     })
 
     cliente.on('authenticated', session => {
@@ -94,8 +103,9 @@ function startBot() {
     })
 
     cliente.on('group_join', async (per) => {
-        if (per.chatId === '51930360511-1604634954@g.us') {
-            // const chat = await msg.getChat();
+
+        if (per.chatId === '51930360511-1604634954@g.us' || per.chatId === '51930360511-1615519188@g.us') {
+
             const user = await per.getContact();
 
             const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
@@ -107,7 +117,9 @@ function startBot() {
     })
 
     cliente.on('group_leave', per => {
-        if (per.chatId === '51930360511-1604634954@g.us') {
+
+        if (per.chatId === '51930360511-1604634954@g.us' || per.chatId === '51930360511-1615519188@g.us') {
+
             const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
             var mensaje = `Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!! `
 
@@ -117,17 +129,17 @@ function startBot() {
     })
 
     cliente.on('message', async (msg) => {
-        console.log(msg)
+
         if (msg.from === '51930360511-1604634954@g.us') {
 
             if (msg.body === `${prefijo}menu`) {
 
-                cliente.sendMessage(msg.from, menu(prefijo));
+                cliente.sendMessage(msg.from, menuPrincipal(prefijo));
             }
 
             else if (msg.body === `${prefijo}comandos`) {
 
-                cliente.sendMessage(msg.from, comandos(prefijo));
+                cliente.sendMessage(msg.from, comandosPrincipal(prefijo));
             }
 
             else if (msg.body === `${prefijo}stream`) {
@@ -160,11 +172,11 @@ function startBot() {
                     cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true });
                 }
                 else if (msg.hasMedia && msg.type != 'image') {
-                    var mensaje = '❌ Solo Imagenes ps perro';
+                    var mensaje = '❌ Solo Imagenes ps perro ❌';
                     cliente.sendMessage(msg.from, mensaje)
                 }
                 else {
-                    var mensaje = '❌ Porque eres bruto tio?, PIENSA MIERDA DEBES ENVIAR UNA IMAGEN';
+                    var mensaje = '❌ Porque eres bruto tio?, PIENSA MIERDA DEBES ENVIAR UNA IMAGEN ❌';
                     cliente.sendMessage(msg.from, mensaje)
                 }
 
@@ -214,7 +226,7 @@ function startBot() {
             }
 
             else if (msg.body === `${prefijo}admins`) {
-                
+
                 const chat = await msg.getChat();
 
                 let text = "";
@@ -244,6 +256,62 @@ function startBot() {
                 const media = MessageMedia.fromFilePath(`src/assets/audio/anime${i}.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
+        }
+
+        else if (msg.from === '51930360511-1615519188@g.us') {
+
+            if (msg.body === `${prefijo}menu`) {
+
+                cliente.sendMessage(msg.from, menuProgramacion(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}comandos`) {
+
+                cliente.sendMessage(msg.from, comandosProgramacion(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}stream`) {
+
+                cliente.sendMessage(msg.from, stream(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}grupos`) {
+
+                cliente.sendMessage(msg.from, grupos(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}bot`) {
+
+                cliente.sendMessage(msg.from, bot(prefijo));
+            }
+            
+            else if (msg.body === `${prefijo}buenosdias`) {
+
+                const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
+                cliente.sendMessage(msg.from, media);
+            }
+
+            else if (msg.body === `${prefijo}motivacion`) {
+
+                const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
+                cliente.sendMessage(msg.from, media);
+            }
+            
+            else if (msg.body === `${prefijo}cuenta`) {
+
+                cliente.sendMessage(msg.from, cuentaProgramacion(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}cursos`) {
+
+                cliente.sendMessage(msg.from, cursosProgramacion(prefijo));
+            }
+
+            else if (msg.body === `${prefijo}java`) {
+
+                cliente.sendMessage(msg.from, java(prefijo));
+            }
+
         }
     })
 }

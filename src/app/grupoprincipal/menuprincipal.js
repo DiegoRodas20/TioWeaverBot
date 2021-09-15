@@ -1,8 +1,8 @@
-const menu = (prefijo) => {
+const menuPrincipal = (prefijo) => {
 
   var mensaje = ` 
 
-⌜  *𝑇𝐼𝑂 𝑊𝐸𝐴𝑉𝐸𝑅 𝐵𝑂𝑇*⌟
+⌜  *𝑇𝐼𝑂 𝑊𝐸𝐴𝑉𝐸𝑅 𝐵𝑂𝑇* ⌟
        
 ◉ *INFORMACIÓN 👋≧◉ᴥ◉≦*
   ║
@@ -39,17 +39,4 @@ ESTOY EN DESARROLLO MI REY 🙈
   return mensaje;
 }
 
-exports.menu = menu
-
-// ◉ | ¿Como chucha uso el bot? |
-//   ║
-//   ╚ ○  Registrate con el comando ${prefijo}cpp y tu nombre
-
-
-// ◉ | CONVERTIDORES |
-//   ║     
-//   ╠ De Sticker a JPG
-//   ╠ ○  ${prefijo}toimg
-//   ║
-//   ╠ De Video a MP3
-//   ╚ ○  ${prefijo}tomp3
+exports.menuPrincipal = menuPrincipal

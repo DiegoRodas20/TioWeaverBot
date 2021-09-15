@@ -1,0 +1,19 @@
+const bienvenido = JSON.parse(fs.readFileSync('./database/json/bienvenido.json'))
+const ffmpeg = require('fluent-ffmpeg')
+
+// ◉ | ¿Como chucha uso el bot? |
+//   ║
+//   ╚ ○  Registrate con el comando ${prefijo}cpp y tu nombre
+
+
+// ◉ | CONVERTIDORES |
+//   ║     
+//   ╠ De Sticker a JPG
+//   ╠ ○  ${prefijo}toimg
+//   ║
+//   ╠ De Video a MP3
+//   ╚ ○  ${prefijo}tomp3
+
+const getRandom = (ext) => {
+    return `${Math.floor(Math.random() * 10000)}${ext}`
+}

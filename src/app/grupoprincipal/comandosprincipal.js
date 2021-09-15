@@ -1,4 +1,4 @@
-const comandos = (prefijo) => {
+const comandosPrincipal = (prefijo) => {
 
 var mensaje = `
 ◉ *COMANDOS (っ◔◡◔)っ ❤*
@@ -18,4 +18,4 @@ var mensaje = `
 return mensaje;
 }
 
-exports.comandos = comandos
+exports.comandosPrincipal = comandosPrincipal
