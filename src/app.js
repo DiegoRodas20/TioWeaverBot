@@ -7,8 +7,9 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+const port = process.env.PORT || 3000;
 
-// APIS
+// APIS Y LIBRERIAS
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
@@ -35,9 +36,24 @@ var prefijo = '*'
 const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
 let sessionData;
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', port);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.sendFile('index.html', {
+        root: __dirname
+    });
+});
+
+// server.listen(port, function () {
+//     console.log('App running on *: ' + port);
+// });
+
+const listener = app.listen(port, () => {
+    console.log("Your app is listening on port " + listener.address().port);
+});
 
 if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
