@@ -32,3 +32,8 @@ const getRandom = (ext) => {
                 const media = MessageMedia.fromFilePath(`src/assets/audio/anime${i}.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
+
+
+app.get('/index', (req, res) => {
+    res.render('index');
+});

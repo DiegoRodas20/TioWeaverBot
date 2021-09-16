@@ -43,10 +43,6 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
 }
 
-app.get('/index', (req, res) => {
-    res.render('index');
-});
-
 const cliente = new Client({
     session: sessionData,
     puppeteer: {
