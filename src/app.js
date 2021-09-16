@@ -43,10 +43,8 @@ if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
 }
 
-app.get('/', (req, res) => {
-    res.sendFile('index.html', {
-        root: __dirname
-    });
+app.get('/index', (req, res) => {
+    res.render('index');
 });
 
 const cliente = new Client({
