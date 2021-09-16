@@ -1,10 +1,12 @@
 const express = require('express');
-const socketio = require('socket.io');
+const socketIO = require('socket.io');
 const http = require('http');
 const path = require('path');
 
+// Server
 const app = express();
 const server = http.createServer(app);
+const io = socketIO(server);
 
 // APIS
 const { Client, MessageMedia } = require('whatsapp-web.js');
@@ -40,6 +42,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
 }
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html', {
+        root: __dirname
+    });
+});
 
 const cliente = new Client({
     session: sessionData,
