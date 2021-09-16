@@ -12,8 +12,7 @@ var mensaje = `
   ╠ ○  ${prefijo}admins
   ╠ ○  ${prefijo}all
   ╠ ○  ${prefijo}buenosdias
-  ╠ ○  ${prefijo}motivacion
-  ╚ ○  ${prefijo}mipremio
+  ╚ ○  ${prefijo}motivacion
 `
 return mensaje;
 }

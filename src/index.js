@@ -152,13 +152,6 @@ function startBot() {
                 cliente.sendMessage(msg.from, grupos(prefijo));
             }
 
-            else if (msg.body === `${prefijo}mipremio`) {
-
-                const i = Math.floor(Math.random() * (6 - 1)) + 1;
-                const media = MessageMedia.fromFilePath(`src/assets/img/porno${i}.jpeg`);
-                cliente.sendMessage(msg.from, media);
-            }
-
             else if (msg.body === `${prefijo}bot`) {
 
                 cliente.sendMessage(msg.from, bot(prefijo));
@@ -249,13 +242,6 @@ function startBot() {
 
             }
 
-            else if (msg.body.toLowerCase().includes('bot')) {
-
-                const i = Math.floor(Math.random() * (5 - 1)) + 1;
-
-                const media = MessageMedia.fromFilePath(`src/assets/audio/anime${i}.mp3`);
-                cliente.sendMessage(msg.from, media);
-            }
         }
 
         else if (msg.from === '51930360511-1615519188@g.us') {
@@ -284,7 +270,25 @@ function startBot() {
 
                 cliente.sendMessage(msg.from, bot(prefijo));
             }
-            
+
+            else if (msg.body === `${prefijo}sticker`) {
+
+                if (msg.hasMedia && msg.type === 'image') {
+
+                    const media = await msg.downloadMedia();
+                    cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true });
+                }
+                else if (msg.hasMedia && msg.type != 'image') {
+                    var mensaje = '❌ Solo Imagenes ps perro ❌';
+                    cliente.sendMessage(msg.from, mensaje)
+                }
+                else {
+                    var mensaje = '❌ Porque eres bruto tio?, PIENSA MIERDA DEBES ENVIAR UNA IMAGEN ❌';
+                    cliente.sendMessage(msg.from, mensaje)
+                }
+
+            }
+
             else if (msg.body === `${prefijo}buenosdias`) {
 
                 const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
@@ -296,7 +300,7 @@ function startBot() {
                 const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
-            
+
             else if (msg.body === `${prefijo}cuenta`) {
 
                 cliente.sendMessage(msg.from, cuentaProgramacion(prefijo));

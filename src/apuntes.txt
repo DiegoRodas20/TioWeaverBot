@@ -17,3 +17,18 @@ const ffmpeg = require('fluent-ffmpeg')
 const getRandom = (ext) => {
     return `${Math.floor(Math.random() * 10000)}${ext}`
 }
+
+// else if (msg.body === `${prefijo}mipremio`) {
+
+            //     const i = Math.floor(Math.random() * (6 - 1)) + 1;
+            //     const media = MessageMedia.fromFilePath(`src/assets/img/porno${i}.jpeg`);
+            //     cliente.sendMessage(msg.from, media);
+            // }
+
+            else if (msg.body.toLowerCase().includes('bot')) {
+
+                const i = Math.floor(Math.random() * (5 - 1)) + 1;
+
+                const media = MessageMedia.fromFilePath(`src/assets/audio/anime${i}.mp3`);
+                cliente.sendMessage(msg.from, media);
+            }
