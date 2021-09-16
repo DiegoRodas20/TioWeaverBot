@@ -72,6 +72,10 @@ app.get('/webhook', (req, res) => {
     }
 })
 
+app.post('/webhook', (req, res) => {
+    console.log('json', req)
+})
+
 // server.listen(port, function () {
 //     console.log('App running on *: ' + port);
 // });
