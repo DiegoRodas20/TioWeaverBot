@@ -37,3 +37,5 @@ const getRandom = (ext) => {
 app.get('/index', (req, res) => {
     res.render('index');
 });
+
+

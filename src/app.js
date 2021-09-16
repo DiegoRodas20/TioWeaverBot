@@ -73,7 +73,7 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-    console.log('json', req)
+    console.log('json', req.body)
 })
 
 // server.listen(port, function () {
