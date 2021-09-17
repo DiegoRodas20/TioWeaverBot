@@ -35,6 +35,8 @@ const { java } = require('./app/grupoprogramacion/java')
 var prefijo = '*'
 const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
 let sessionData;
+let description;
+
 
 app.set('port', port);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -76,8 +78,14 @@ app.post('/webhook', (req, res) => {
 
     // console.log(req.body)
     // console.log(req.body.embeds[0].description)
-    let description = req.body.embeds[0].description
-    startBot(description)
+    description = req.body.embeds[0].description
+    
+    let grupoGeneral = '51930360511-1604634954@g.us';
+    let grupoProgra = '51930360511-1615519188@g.us';
+
+    cliente.sendMessage(grupoGeneral, description);
+    cliente.sendMessage(grupoProgra, description);
+
 })
 
 // server.listen(port, function () {
@@ -109,9 +117,9 @@ const cliente = new Client({
     },
 });
 
-function startBot(description) {
+cliente.initialize();
 
-    cliente.initialize();
+function startBot(description) {
 
     cliente.on('qr', qr => {
         qrcode.generate(qr, { small: true })
@@ -123,16 +131,12 @@ function startBot(description) {
         let grupoGeneral = '51930360511-1604634954@g.us';
         let grupoProgra = '51930360511-1615519188@g.us';
 
-        if (description != undefined) {
-            cliente.sendMessage(grupoGeneral, description);
-            cliente.sendMessage(grupoProgra, description);
-        }
-
         cliente.sendMessage(grupoGeneral, msg).then(Response => {
             if (Response.id.fromMe) {
                 console.log('El mensaje fue enviado al grupo general')
             }
         })
+
         cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
 
         cliente.sendMessage(grupoProgra, msg).then(Response => {
