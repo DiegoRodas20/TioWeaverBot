@@ -19,6 +19,7 @@ const SESSION_FILE_PATH = './session.json';
 const { stream } = require('./app/comandosgeneral/stream');
 const { grupos } = require('./app/comandosgeneral/grupos');
 const { bot } = require('./app/comandosgeneral/bot');
+const { streamNotify } = require('./app/comandosgeneral/streamnotify');
 
 // Comandos Grupo Principal
 const { menuPrincipal } = require('./app/grupoprincipal/menuprincipal')
@@ -34,6 +35,8 @@ const { java } = require('./app/grupoprogramacion/java')
 // Variables Globales
 var prefijo = '*'
 const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
+const grupoGeneral = '51930360511-1604634954@g.us';
+const grupoProgra = '51930360511-1615519188@g.us';
 let sessionData;
 let description;
 
@@ -76,15 +79,11 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', (req, res) => {
 
-    // console.log(req.body)
-    // console.log(req.body.embeds[0].description)
-    description = req.body.embeds[0].description
-    
-    let grupoGeneral = '51930360511-1604634954@g.us';
-    let grupoProgra = '51930360511-1615519188@g.us';
+    console.log(req.body)
 
-    cliente.sendMessage(grupoGeneral, description);
-    cliente.sendMessage(grupoProgra, description);
+    description = req.body.embeds[0].description
+    cliente.sendMessage(grupoGeneral, streamNotify(description));
+    cliente.sendMessage(grupoProgra, streamNotify(description));
 
 })
 
@@ -128,9 +127,6 @@ function startBot(description) {
     cliente.on('ready', () => {
         console.log('El Cliente esta listo')
 
-        let grupoGeneral = '51930360511-1604634954@g.us';
-        let grupoProgra = '51930360511-1615519188@g.us';
-
         cliente.sendMessage(grupoGeneral, msg).then(Response => {
             if (Response.id.fromMe) {
                 console.log('El mensaje fue enviado al grupo general')
@@ -165,7 +161,7 @@ function startBot(description) {
 
     cliente.on('group_join', async (per) => {
 
-        if (per.chatId === '51930360511-1604634954@g.us' || per.chatId === '51930360511-1615519188@g.us') {
+        if (per.chatId === grupoGeneral || per.chatId === grupoProgra) {
 
             const user = await per.getContact();
 
@@ -179,7 +175,7 @@ function startBot(description) {
 
     cliente.on('group_leave', per => {
 
-        if (per.chatId === '51930360511-1604634954@g.us' || per.chatId === '51930360511-1615519188@g.us') {
+        if (per.chatId === grupoGeneral || per.chatId === grupoProgra) {
 
             const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
             var mensaje = `Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!! `
@@ -191,7 +187,7 @@ function startBot(description) {
 
     cliente.on('message', async (msg) => {
 
-        if (msg.from === '51930360511-1604634954@g.us') {
+        if (msg.from === grupoGeneral) {
 
             if (msg.body === `${prefijo}menu`) {
 
@@ -305,7 +301,7 @@ function startBot(description) {
 
         }
 
-        else if (msg.from === '51930360511-1615519188@g.us') {
+        else if (msg.from === grupoProgra) {
 
             if (msg.body === `${prefijo}menu`) {
 
