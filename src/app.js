@@ -73,11 +73,13 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
+    console.log('json', req)
     console.log('json', req.body)
+    console.log('json', req.body.json)
 
-    if (req.body.embeds) {
-        startBot(req.body)
-    }
+    // if (req.body.embeds) {
+    //     startBot(req.body)
+    // }
 })
 
 // server.listen(port, function () {
