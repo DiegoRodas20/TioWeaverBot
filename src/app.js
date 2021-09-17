@@ -74,17 +74,9 @@ app.get('/webhook', (req, res) => {
 
 app.post('/webhook', (req, res) => {
 
-    // let jsonData = JSON.stringify(req.body)
-    let jsonValue = JSON.parse(json)
-    let jsonSpecifiedValue = (jsonValue.embeds && jsonValue.embeds.length > 0) ? jsonValue.embeds[0].description || false : false;
-
-    console.log(jsonSpecifiedValue)
     // console.log(req.body)
     // console.log(req.body.embeds[0].description)
-
-    // if (jsonSpecifiedValue) {
-    //     startBot(req.body)
-    // }
+    startBot(req.body)
 })
 
 // server.listen(port, function () {
@@ -130,26 +122,25 @@ function startBot(stream) {
         let grupoGeneral = '51930360511-1604634954@g.us';
         let grupoProgra = '51930360511-1615519188@g.us';
 
-        if (stream != 0) {
+        if (stream != undefined) {
             cliente.sendMessage(grupoGeneral, stream.embeds[0].description);
             cliente.sendMessage(grupoProgra, stream.embeds[0].description);
         }
-        else if (stream == 0) {
-            cliente.sendMessage(grupoGeneral, msg).then(Response => {
-                if (Response.id.fromMe) {
-                    console.log('El mensaje fue enviado al grupo general')
-                }
-            })
-            cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
 
-            cliente.sendMessage(grupoProgra, msg).then(Response => {
-                if (Response.id.fromMe) {
-                    console.log('El mensaje fue enviado al grupo de programación')
-                }
-            })
+        cliente.sendMessage(grupoGeneral, msg).then(Response => {
+            if (Response.id.fromMe) {
+                console.log('El mensaje fue enviado al grupo general')
+            }
+        })
+        cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
 
-            cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
-        }
+        cliente.sendMessage(grupoProgra, msg).then(Response => {
+            if (Response.id.fromMe) {
+                console.log('El mensaje fue enviado al grupo de programación')
+            }
+        })
+
+        cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
 
     })
 
@@ -385,7 +376,7 @@ function startBot(stream) {
     })
 }
 
-startBot(0)
+startBot()
 
 
             // else if (msg.body.includes(`${prefijo}tomp3`)) {
