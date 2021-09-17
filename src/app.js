@@ -73,9 +73,8 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-    console.log('json', req)
     console.log('json', req.body)
-    console.log('json', req.body.json)
+    console.log('json', req.body[0].description)
 
     // if (req.body.embeds) {
     //     startBot(req.body)
