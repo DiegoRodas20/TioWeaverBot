@@ -40,3 +40,13 @@ app.get('/index', (req, res) => {
 
 
 https://graph.facebook.com/102207198205289/subscribed_apps?subscribed_fields=live_videos&access_token=EAAJwZAiJd21IBAGPDweGzuvv3q8YlbquLP5XbZCebHmJCTPmxQ3wH6poCx2wpLlZAk1TQB4lWUYgA5DcR54ZBOcLBVOs3OBJ9RhJOvHz93yR46wLqvkCvmJQqW0GfAaOtY3OiR6wEFVdUcUZCjxY8LLzHgTihZBdWAoo76GzCI6ZALFeZB3tW769PI0h9KYJiFZAcUDqLIxiWWwZDZD
+
+
+// if (req.body.embeds) {
+    //     startBot(req.body)
+    // }
+
+    // if (req) {
+        //     cliente.sendMessage(grupoGeneral, req.embed[0].description);
+        //     cliente.sendMessage(grupoProgra, req.embed[0].description);
+        // }

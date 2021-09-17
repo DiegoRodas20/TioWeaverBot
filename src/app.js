@@ -123,24 +123,27 @@ function startBot(req) {
         let grupoGeneral = '51930360511-1604634954@g.us';
         let grupoProgra = '51930360511-1615519188@g.us';
 
-        cliente.sendMessage(grupoGeneral, msg).then(Response => {
-            if (Response.id.fromMe) {
-                console.log('El mensaje fue enviado al grupo general')
-            }
-        })
-        cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
         if (req) {
             cliente.sendMessage(grupoGeneral, req.embed[0].description);
             cliente.sendMessage(grupoProgra, req.embed[0].description);
         }
+        else {
+            cliente.sendMessage(grupoGeneral, msg).then(Response => {
+                if (Response.id.fromMe) {
+                    console.log('El mensaje fue enviado al grupo general')
+                }
+            })
+            cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
 
-        cliente.sendMessage(grupoProgra, msg).then(Response => {
-            if (Response.id.fromMe) {
-                console.log('El mensaje fue enviado al grupo de programación')
-            }
-        })
+            cliente.sendMessage(grupoProgra, msg).then(Response => {
+                if (Response.id.fromMe) {
+                    console.log('El mensaje fue enviado al grupo de programación')
+                }
+            })
 
-        cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
+            cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
+        }
+
     })
 
     cliente.on('authenticated', session => {
@@ -373,8 +376,6 @@ function startBot(req) {
 
         }
     })
-
-    cliente.on('message_create')
 }
 
 startBot()
