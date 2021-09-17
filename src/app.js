@@ -73,12 +73,18 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-    console.log(req.body)
-    console.log(req.body.embeds[0].description)
 
-    if (req.body.embeds) {
-        startBot(req.body)
-    }
+    // let jsonData = JSON.stringify(req.body)
+    let jsonValue = JSON.parse(json)
+    let jsonSpecifiedValue = (jsonValue.embeds && jsonValue.embeds.length > 0) ? jsonValue.embeds[0].description || false : false;
+
+    console.log(jsonSpecifiedValue)
+    // console.log(req.body)
+    // console.log(req.body.embeds[0].description)
+
+    // if (jsonSpecifiedValue) {
+    //     startBot(req.body)
+    // }
 })
 
 // server.listen(port, function () {
@@ -128,7 +134,7 @@ function startBot(stream) {
             cliente.sendMessage(grupoGeneral, stream.embeds[0].description);
             cliente.sendMessage(grupoProgra, stream.embeds[0].description);
         }
-        else if(stream == 0) {
+        else if (stream == 0) {
             cliente.sendMessage(grupoGeneral, msg).then(Response => {
                 if (Response.id.fromMe) {
                     console.log('El mensaje fue enviado al grupo general')
