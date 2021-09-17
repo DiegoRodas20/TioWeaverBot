@@ -75,7 +75,7 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', (req, res) => {
     console.log('json', req.body)
 
-    if(req.body.embeds){
+    if (req.body.embeds) {
         startBot(req.body)
     }
 })
@@ -129,7 +129,10 @@ function startBot(req) {
             }
         })
         cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
-        cliente.sendMessage(grupoGeneral, req.embed[0].description);
+        if (req) {
+            cliente.sendMessage(grupoGeneral, req.embed[0].description);
+            cliente.sendMessage(grupoProgra, req.embed[0].description);
+        }
 
         cliente.sendMessage(grupoProgra, msg).then(Response => {
             if (Response.id.fromMe) {
