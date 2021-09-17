@@ -73,8 +73,8 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', (req, res) => {
-    console.log('json', req.body)
-    console.log('json', req.body.embeds[0].description)
+    console.log(req.body)
+    console.log(req.body.embeds[0].description)
 
     // if (req.body.embeds) {
     //     startBot(req.body)
@@ -110,7 +110,7 @@ const cliente = new Client({
     },
 });
 
-function startBot(req) {
+function startBot(stream) {
 
     cliente.initialize();
 
@@ -124,11 +124,11 @@ function startBot(req) {
         let grupoGeneral = '51930360511-1604634954@g.us';
         let grupoProgra = '51930360511-1615519188@g.us';
 
-        if (req.embeds) {
+        if (stream != 0) {
             cliente.sendMessage(grupoGeneral, req.embed[0].description);
             cliente.sendMessage(grupoProgra, req.embed[0].description);
         }
-        else if(req = null) {
+        else if(stream == 0) {
             cliente.sendMessage(grupoGeneral, msg).then(Response => {
                 if (Response.id.fromMe) {
                     console.log('El mensaje fue enviado al grupo general')
@@ -379,7 +379,7 @@ function startBot(req) {
     })
 }
 
-startBot(null)
+startBot(0)
 
 
             // else if (msg.body.includes(`${prefijo}tomp3`)) {
