@@ -76,9 +76,9 @@ app.post('/webhook', (req, res) => {
     console.log(req.body)
     console.log(req.body.embeds[0].description)
 
-    // if (req.body.embeds) {
-    //     startBot(req.body)
-    // }
+    if (req.body.embeds) {
+        startBot(req.body)
+    }
 })
 
 // server.listen(port, function () {
@@ -125,8 +125,8 @@ function startBot(stream) {
         let grupoProgra = '51930360511-1615519188@g.us';
 
         if (stream != 0) {
-            cliente.sendMessage(grupoGeneral, req.embed[0].description);
-            cliente.sendMessage(grupoProgra, req.embed[0].description);
+            cliente.sendMessage(grupoGeneral, stream.embeds[0].description);
+            cliente.sendMessage(grupoProgra, stream.embeds[0].description);
         }
         else if(stream == 0) {
             cliente.sendMessage(grupoGeneral, msg).then(Response => {
