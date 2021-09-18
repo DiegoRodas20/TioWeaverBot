@@ -1,6 +1,8 @@
 const comandosPrincipal = (prefijo) => {
 
 var mensaje = `
+⌜  *𝑇𝐼𝑂 𝑊𝐸𝐴𝑉𝐸𝑅 𝐵𝑂𝑇* ⌟
+
 ◉ *COMANDOS (っ◔◡◔)っ ❤*
   ║
   ╠ ○  ${prefijo}menu
@@ -8,11 +10,15 @@ var mensaje = `
   ╠ ○  ${prefijo}stream
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}bot
-  ╠ ○  ${prefijo}sticker
+  ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}motivacion
   ╠ ○  ${prefijo}admins
   ╠ ○  ${prefijo}all
-  ╠ ○  ${prefijo}buenosdias
-  ╚ ○  ${prefijo}motivacion
+  ╠ ○  ${prefijo}sticker
+  ╠ ○  ${prefijo}play
+  ╚ ○  ${prefijo}porno
+
+*VAMOS MIERDAAA!!*
 `
 return mensaje;
 }

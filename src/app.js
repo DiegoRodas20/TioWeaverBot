@@ -11,6 +11,9 @@ const port = process.env.PORT || 3000;
 
 // APIS Y LIBRERIAS
 const { Client, MessageMedia } = require('whatsapp-web.js');
+const pornhub = require('@justalk/pornhub-api');
+const { fetchJson } = require('../lib/fetcher')
+const { getBuffer } = require('../lib/functions')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
 const SESSION_FILE_PATH = './session.json';
@@ -39,7 +42,6 @@ const grupoGeneral = '51930360511-1604634954@g.us';
 const grupoProgra = '51930360511-1615519188@g.us';
 let sessionData;
 let description;
-
 
 app.set('port', port);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -299,6 +301,63 @@ function startBot(description) {
 
             }
 
+            else if (msg.body.includes(`${prefijo}play`)) {
+
+                if (msg.body === `${prefijo}play`) {
+                    msg.reply(`*¿Donde chucha esta el nombre de la música?* 😠\n\n➜ *Ejemplo:* *play bigbang if you`)
+                }
+                else {
+                    msg.reply(`*Estoy convirtiendo tu musica, espera un momento porfavor* 🎶`);
+
+                    try {
+                        let music = msg.body.slice(6)
+                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3/2?apikey=tioweaverbot&q=${music}`)
+
+                        let musicSize = data.result.size
+                        let sizeArray = musicSize.split(' ');
+
+                        let sizeNumero = Number(sizeArray[0]);
+                        let sizeTipo = sizeArray[1];
+
+                        if (sizeTipo === "MB" && sizeNumero < 15) {
+                            let musicInfo = `*Canción Encontrada* 😄\n\n➜ *Título:* ${data.result.title}\n➜ *Fuente:* ${data.result.source}\n➜ *Tamaño:* ${data.result.size}\n\n*VAMOS MIERDA!!*`
+                            msg.reply(musicInfo);
+
+                            let media = await MessageMedia.fromUrl(data.result.link, { unsafeMime: true });
+                            msg.reply(media);
+                        }
+                        else {
+                            msg.reply(`*No busques videos muy grandes, se caera mi sistema* 😭`)
+                        }
+                    }
+                    catch (exception) {
+                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                    }
+
+
+                }
+            }
+
+            else if (msg.body.includes(`${prefijo}porno`)) {
+
+                if (msg.body === `${prefijo}porno`) {
+                    msg.reply(`*Busca bien pues hijo de perra*\n\n➜ *Ejemplo:* *porno Asiaticas`)
+                }
+                else {
+                    msg.reply(`*Estoy buscando tu porno, espera un momento porfavor* 💦`);
+                    try {
+                        const i = Math.floor(Math.random() * (20 - 1)) + 1;
+                        const categoria = msg.body.slice(6)
+                        const video = await pornhub.search(categoria, ["title", "link", "premium", "hd"]);
+                        const linkVideo = video.results[i].link
+
+                        msg.reply(`*Toma mi rey, que lo disfrutes* 😈\n\n➜ *Link:* ${linkVideo}`)
+                    }
+                    catch (exception) {
+                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                    }
+                }
+            }
         }
 
         else if (msg.from === grupoProgra) {

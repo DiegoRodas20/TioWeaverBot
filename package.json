@@ -10,9 +10,12 @@
   "author": "EL TIO WEAVER",
   "license": "ISC",
   "dependencies": {
+    "@justalk/pornhub-api": "^3.5.0",
+    "axios": "^0.21.4",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
     "http": "0.0.1-security",
+    "npm": "^7.24.0",
     "qrcode-terminal": "^0.12.0",
     "socket.io": "^4.2.0",
     "whatsapp-web.js": "^1.14.1"
