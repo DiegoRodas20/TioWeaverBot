@@ -79,13 +79,25 @@ app.get('/webhook', (req, res) => {
     }
 })
 
-app.post('/webhook', (req, res) => {
-
+app.post('/webhook', async (req, res) => {
     console.log(req.body)
 
     description = req.body.embeds[0].description
-    cliente.sendMessage(grupoGeneral, streamNotify(description));
-    cliente.sendMessage(grupoProgra, streamNotify(description));
+    let text = "";
+    let mentions = [];
+    const chat = await cliente.getChatById(grupoGeneral)
+
+    for (let participant of chat.participants) {
+        const contact = await cliente.getContactById(participant.id._serialized);
+        mentions.push(contact);
+        text += `@${participant.id.user} `;
+    }
+
+    for (let index = 0; index < 5; index++) {
+        await chat.sendMessage(text, { mentions });
+        await cliente.sendMessage(grupoGeneral, streamNotify(description));
+        await cliente.sendMessage(grupoProgra, streamNotify(description));
+    }
 
 })
 
@@ -250,6 +262,7 @@ function startBot(description) {
 
                 const authorId = msg.author || message.from;
                 const chat = await msg.getChat();
+                console.log(msg)
                 let isAdmin = true
 
                 let text = "";
