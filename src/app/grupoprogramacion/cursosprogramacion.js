@@ -1,7 +1,7 @@
 const cursosProgramacion = (prefijo) => {
 
 var mensaje = `
-*PROXIMAMENTE*
+*AUN EN DESARROLLO*
 
 ◉ *LENGUAJES PROGRA*
   ║

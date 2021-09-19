@@ -80,7 +80,6 @@ app.get('/webhook', (req, res) => {
 })
 
 app.post('/webhook', async (req, res) => {
-    console.log(req.body)
 
     description = req.body.embeds[0].description
     let text = "";
@@ -371,6 +370,10 @@ function startBot(description) {
                     }
                 }
             }
+
+            else if(msg.body.includes(`${prefijo}`)) {
+                cliente.sendMessage(msg.from, '*La opción aun no se encuentra implementada o no escribiste bien el comando, intentalo denuevo!!*');
+            }
         }
 
         else if (msg.from === grupoProgra) {
@@ -445,27 +448,12 @@ function startBot(description) {
                 cliente.sendMessage(msg.from, java(prefijo));
             }
 
+            else if(msg.body.includes(`${prefijo}`)) {
+                cliente.sendMessage(msg.from, '*La opción aun no se encuentra implementada o no escribiste bien el comando, intentalo denuevo!!*');
+            }
+
         }
     })
 }
 
 startBot()
-
-
-            // else if (msg.body.includes(`${prefijo}tomp3`)) {
-
-            //     var link = msg.links.link;
-
-            //     const media = MessageMedia.fromUrl(link);
-            //     cliente.sendMessage(msg.from, media, { sendMediaAsSticker: true })
-            // }
-
-
-                // for (let participant of chat.participants) {
-                //     const contact = await cliente.getContactById(participant.id._serialized);
-
-                //     mentions.push(contact);
-                //     text += `@${participant.id.user} `;
-                // }
-
-                // await chat.sendMessage(text, { mentions });

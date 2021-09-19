@@ -1,9 +1,9 @@
-const stream = (prefijo) => {
+const stream = (descripcion) => {
 
     var mensaje = `
-*ENTRA AL STREAM CARAJO  ʕ•́ᴥ•̀ʔっ*           
+*ENTRA AL STREAM CARAJO*           
                                                            
-⌜https://www.facebook.com/gaming/ElTioWeaver⌟
+➜ https://www.facebook.com/gaming/ElTioWeaver
                                             
 *VAMOS MIERDA! ᕙ( ͡> ͜ʖ ͡<)ᕗ*                   
 `
