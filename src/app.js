@@ -174,27 +174,27 @@ function startBot(description) {
 
     cliente.on('group_join', async (per) => {
 
-        if (per.chatId === grupoGeneral || per.chatId === grupoProgra) {
+        if (per.id.remote === grupoGeneral || per.id.remote === grupoProgra) {
 
-            const user = await per.getContact();
+            const user = await cliente.getContactById(per.recipientIds[0]);
 
             const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
-            var mensaje = `HOLAAAA @${user.id.user}! ¿COMO ESTAS MI CONDORCANKING? 😃 \n\n Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.\n\n VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!`
+            var mensaje = `*HOLAAAA @${user.id.user}! ¿COMO ESTAS MI REY? 😃* \n\n*Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.*\n\n*VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!*`
 
-            cliente.sendMessage(per.chatId, mensaje, { mentions: [user] });
-            cliente.sendMessage(per.chatId, media);
+            cliente.sendMessage(per.id.remote, mensaje, { mentions: [user] });
+            cliente.sendMessage(per.id.remote, media);
         }
     })
 
     cliente.on('group_leave', per => {
 
-        if (per.chatId === grupoGeneral || per.chatId === grupoProgra) {
+        if (per.id.remote === grupoGeneral || per.id.remote === grupoProgra) {
 
             const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
-            var mensaje = `Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!! `
+            var mensaje = `*Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!!*`
 
-            cliente.sendMessage(per.chatId, mensaje);
-            cliente.sendMessage(per.chatId, media);
+            cliente.sendMessage(per.id.remote, mensaje);
+            cliente.sendMessage(per.id.remote, media);
         }
     })
 
