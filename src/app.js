@@ -2,6 +2,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
 const path = require('path');
+const axios = require('axios');
 
 // Server
 const app = express();
@@ -17,6 +18,21 @@ const { getBuffer } = require('../lib/functions')
 const qrcode = require('qrcode-terminal')
 const fs = require('fs');
 const SESSION_FILE_PATH = './session.json';
+
+// DialogFlow
+const dialogflow = require('@google-cloud/dialogflow');
+require('dotenv').config();
+const CREDENTIALS = JSON.parse(process.env.CREDENTIALS);
+const PROJECTID = CREDENTIALS.project_id;
+const CONFIGURATION = {
+    credentials: {
+        private_key: CREDENTIALS['private_key'],
+        client_email: CREDENTIALS['client_email']
+    }
+}
+const sessionClient = new dialogflow.SessionsClient(CONFIGURATION);
+
+// detectIntent('es', 'Hola bot', 'tioweaverbot');
 
 // Comandos General
 const { stream } = require('./app/comandosgeneral/stream');
@@ -36,22 +52,25 @@ const { cursosProgramacion } = require('./app/grupoprogramacion/cursosprogramaci
 const { java } = require('./app/grupoprogramacion/java')
 
 // Variables Globales
-var prefijo = '*'
+var prefijo = '*';
+var numeroEstado = 0;
 const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
 const grupoGeneral = '51930360511-1604634954@g.us';
 const grupoProgra = '51930360511-1615519188@g.us';
 let sessionData;
 let description;
 
+// Server
 app.set('port', port);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.sendFile('index.html', {
-        root: __dirname
-    });
+    // res.sendFile('index.html', {
+    //     root: __dirname
+    // });
+    res.send("Probando")
 });
 
 app.get('/webhook', (req, res) => {
@@ -100,14 +119,27 @@ app.post('/webhook', async (req, res) => {
 
 })
 
-// server.listen(port, function () {
-//     console.log('App running on *: ' + port);
-// });
+app.post('/dialogflow/webhook', async (req, res) => {
 
-const listener = app.listen(port, () => {
-    console.log("Your app is listening on port " + listener.address().port);
+    const chat = await cliente.getChatById(grupoGeneral)
+    let languageCode = req.body.languageCode;
+    let queryText = req.body.queryText;
+    let sessionId = req.body.sessionId;
+
+    let responseData = await detectIntent(languageCode, queryText, sessionId);
+    res.send(responseData.response);
+    console.log(responseData.response)
+    cliente.sendMessage(grupoGeneral, responseData.response);
+
+    // res.send(responseData.response);
+    // console.log(responseData.response);
+})
+
+app.listen(port, () => {
+    console.log(`Escuchando peticiones en el puerto ${port}`)
 });
 
+// Session Bot
 if (fs.existsSync(SESSION_FILE_PATH)) {
     sessionData = require(`.${SESSION_FILE_PATH}`);
 }
@@ -131,7 +163,8 @@ const cliente = new Client({
 
 cliente.initialize();
 
-function startBot(description) {
+// Funcionalidades Bot
+function startBot() {
 
     cliente.on('qr', qr => {
         qrcode.generate(qr, { small: true })
@@ -222,11 +255,6 @@ function startBot(description) {
                 cliente.sendMessage(msg.from, grupos(prefijo));
             }
 
-            else if (msg.body === `${prefijo}bot`) {
-
-                cliente.sendMessage(msg.from, bot(prefijo));
-            }
-
             else if (msg.body === `${prefijo}sticker`) {
 
                 if (msg.hasMedia && msg.type === 'image') {
@@ -254,6 +282,12 @@ function startBot(description) {
             else if (msg.body === `${prefijo}motivacion`) {
 
                 const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
+                cliente.sendMessage(msg.from, media);
+            }
+
+            else if (msg.body === `${prefijo}vamosmrd`) {
+
+                const media = MessageMedia.fromFilePath(`src/assets/audio/vamosmrd.mp3`);
                 cliente.sendMessage(msg.from, media);
             }
 
@@ -313,6 +347,7 @@ function startBot(description) {
 
             }
 
+            // Reproductor 1
             else if (msg.body.includes(`${prefijo}play`)) {
 
                 if (msg.body === `${prefijo}play`) {
@@ -323,7 +358,10 @@ function startBot(description) {
 
                     try {
                         let music = msg.body.slice(6)
-                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3/2?apikey=tioweaverbot&q=${music}`)
+                        let musicword = music.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
+
+                        // API 1
+                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3?apikey=tioweaverbot&q=${musicword}`)
 
                         let musicSize = data.result.size
                         let sizeArray = musicSize.split(' ');
@@ -335,7 +373,7 @@ function startBot(description) {
                             let musicInfo = `*Canción Encontrada* 😄\n\n➜ *Título:* ${data.result.title}\n➜ *Fuente:* ${data.result.source}\n➜ *Tamaño:* ${data.result.size}\n\n*VAMOS MIERDA!!*`
                             msg.reply(musicInfo);
 
-                            let media = await MessageMedia.fromUrl(data.result.link, { unsafeMime: true });
+                            let media = await MessageMedia.fromUrl(data.result.url_audio, { unsafeMime: true });
                             msg.reply(media);
                         }
                         else {
@@ -343,7 +381,7 @@ function startBot(description) {
                         }
                     }
                     catch (exception) {
-                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                        msg.reply(`*Ha ocurrido un error, perdoname hijo de perra* 😥`)
                     }
 
 
@@ -371,9 +409,33 @@ function startBot(description) {
                 }
             }
 
-            else if(msg.body.includes(`${prefijo}`)) {
-                cliente.sendMessage(msg.from, '*La opción aun no se encuentra implementada o no escribiste bien el comando, intentalo denuevo!!*');
-            }
+            // else if (msg.body.includes(`${prefijo}pp`)) {
+
+            //     let word = msg.body.slice(3)
+
+            //     msg.reply(`${word}`)
+            //     msg.reply(`${word.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()}`)
+
+            // }
+
+            // else if (msg.body === `${prefijo}bot on`) {
+            //     msg.reply(`*El bot se encuentra encendido, puedes dialogar con el.*`);
+            //     numeroEstado = 1;
+            // }
+
+            // else if (msg.body === `${prefijo}bot off`) {
+            //     msg.reply(`*Gracias por apagarme, esos hijos de perra no dejan de joder*`);
+            //     numeroEstado = 0;
+            // }
+
+            // else {
+            //     if (numeroEstado == 1) {
+            //         detectIntent('es', msg.body, 'tioweaverbot', msg);
+            //     }
+            //     else if (numeroEstado == 0) {
+
+            //     }
+            // }
         }
 
         else if (msg.from === grupoProgra) {
@@ -434,7 +496,7 @@ function startBot(description) {
             }
 
             else if (msg.body === `${prefijo}cuenta`) {
-
+                console.log(msg)
                 cliente.sendMessage(msg.from, cuentaProgramacion(prefijo));
             }
 
@@ -443,12 +505,81 @@ function startBot(description) {
                 cliente.sendMessage(msg.from, cursosProgramacion(prefijo));
             }
 
+            else if (msg.body.includes(`${prefijo}play`)) {
+
+                if (msg.body === `${prefijo}play`) {
+                    msg.reply(`*¿Donde chucha esta el nombre de la música?* 😠\n\n➜ *Ejemplo:* *play bigbang if you`)
+                }
+                else {
+                    msg.reply(`*Estoy convirtiendo tu musica, espera un momento porfavor* 🎶`);
+
+                    try {
+                        let music = msg.body.slice(6)
+                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3/2?apikey=tioweaverbot&q=${music}`)
+
+                        let musicSize = data.result.size
+                        let sizeArray = musicSize.split(' ');
+
+                        let sizeNumero = Number(sizeArray[0]);
+                        let sizeTipo = sizeArray[1];
+
+                        if (sizeTipo === "MB" && sizeNumero < 15) {
+                            let musicInfo = `*Canción Encontrada* 😄\n\n➜ *Título:* ${data.result.title}\n➜ *Fuente:* ${data.result.source}\n➜ *Tamaño:* ${data.result.size}\n\n*VAMOS MIERDA!!*`
+                            msg.reply(musicInfo);
+
+                            let media = await MessageMedia.fromUrl(data.result.link, { unsafeMime: true });
+                            msg.reply(media);
+                        }
+                        else {
+                            msg.reply(`*No busques videos muy grandes, se caera mi sistema* 😭`)
+                        }
+                    }
+                    catch (exception) {
+                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                    }
+
+
+                }
+            }
+
             else if (msg.body === `${prefijo}java`) {
 
                 cliente.sendMessage(msg.from, java(prefijo));
             }
 
-            else if(msg.body.includes(`${prefijo}`)) {
+            else if (msg.body === `${prefijo}all`) {
+
+                const authorId = msg.author || message.from;
+                const chat = await msg.getChat();
+                console.log(msg)
+                let isAdmin = true
+
+                let text = "";
+                let mentions = [];
+
+                if (chat.isGroup) {
+
+                    for (let participant of chat.participants) {
+                        if (participant.id._serialized === authorId && !participant.isAdmin) {
+                            msg.reply(`❌ El comando solo puede ser usado por admins ❌`);
+                            isAdmin = false
+                            break;
+                        }
+                        else {
+                            const contact = await cliente.getContactById(participant.id._serialized);
+
+                            mentions.push(contact);
+                            text += `@${participant.id.user} `;
+                        }
+                    }
+
+                    if (isAdmin) {
+                        await chat.sendMessage(text, { mentions });
+                    }
+                }
+            }
+
+            else if (msg.body.includes(`${prefijo}`)) {
                 cliente.sendMessage(msg.from, '*La opción aun no se encuentra implementada o no escribiste bien el comando, intentalo denuevo!!*');
             }
 
@@ -457,3 +588,35 @@ function startBot(description) {
 }
 
 startBot()
+
+const detectIntent = async (languageCode, queryText, sessionId, msg) => {
+
+    const chat = await cliente.getChatById(grupoGeneral)
+
+    let sessionPath = sessionClient.projectAgentSessionPath(PROJECTID, sessionId);
+
+    // The text query request.
+    let request = {
+        session: sessionPath,
+        queryInput: {
+            text: {
+                // The query to send to the dialogflow agent
+                text: queryText,
+                // The language used by the client (en-US)
+                languageCode: languageCode,
+            },
+        },
+    };
+
+    // Send request and log result
+    const responses = await sessionClient.detectIntent(request);
+    const result = responses[0].queryResult;
+
+    console.log(result.fulfillmentText);
+    // cliente.sendMessage(grupoGeneral, `*${result.fulfillmentText}*`);
+    msg.reply(`*${result.fulfillmentText}*`);
+    return {
+        response: result.fulfillmentText
+    };
+}
+

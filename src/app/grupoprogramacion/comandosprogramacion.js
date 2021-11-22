@@ -9,6 +9,7 @@ var mensaje = `
   ╠ ○  ${prefijo}cuenta
   ╠ ○  ${prefijo}cursos
   ╠ ○  ${prefijo}stream
+  ╠ ○  ${prefijo}play
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}buenosdias
   ╚ ○  ${prefijo}motivacion

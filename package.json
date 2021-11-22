@@ -10,8 +10,10 @@
   "author": "EL TIO WEAVER",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/dialogflow": "^4.3.1",
     "@justalk/pornhub-api": "^3.5.0",
     "axios": "^0.21.4",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
     "http": "0.0.1-security",

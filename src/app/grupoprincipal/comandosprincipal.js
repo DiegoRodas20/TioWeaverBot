@@ -12,11 +12,14 @@ var mensaje = `
   ╠ ○  ${prefijo}bot
   ╠ ○  ${prefijo}buenosdias
   ╠ ○  ${prefijo}motivacion
+  ╠ ○  ${prefijo}vamosmrd
   ╠ ○  ${prefijo}admins
   ╠ ○  ${prefijo}all
   ╠ ○  ${prefijo}sticker
   ╠ ○  ${prefijo}play
-  ╚ ○  ${prefijo}porno
+  ╠ ○  ${prefijo}porno
+  ╠ ○  ${prefijo}bot on
+  ╚ ○  ${prefijo}bot off
 
 *VAMOS MIERDAAA!!*
 `

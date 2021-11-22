@@ -4,7 +4,7 @@ const cuentaProgramacion = (prefijo) => {
 *Udemy.com* 💻           
                                                            
 ➜ Correo: diegorodas2008@hotmail.com
-➜ Contraseña: eltioweaver
+➜ Contraseña: losquiero123
                                             
 *A ESTUDIAR PERROS! ᕙ( ͡> ͜ʖ ͡<)ᕗ*                   
 `

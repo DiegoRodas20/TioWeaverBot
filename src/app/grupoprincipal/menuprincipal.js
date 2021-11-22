@@ -16,10 +16,7 @@ const menuPrincipal = (prefijo) => {
   ╠ ○  ${prefijo}menu
   ╠ ○  ${prefijo}comandos
   ╠ ○  ${prefijo}stream
-  ╠ ○  ${prefijo}grupos
-  ╠ ○  ${prefijo}bot
-  ╠ ○  ${prefijo}buenosdias
-  ╚ ○  ${prefijo}motivacion
+  ╚ ○  ${prefijo}grupos
 
 ◉ *GRUPO*
   ║
@@ -33,13 +30,24 @@ const menuPrincipal = (prefijo) => {
   ║
   ╚ ○  ${prefijo}sticker
 
-◉ *YOUTUBE - MP3*
+◉ *YOUTUBE A MP3*
   ║
   ╚ ○  ${prefijo}play
 
 ◉ *PORN HUB*
   ║
   ╚ ○  ${prefijo}porno
+
+◉ *AUDIOS*
+  ║
+  ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}motivacion
+  ╚ ○  ${prefijo}vamosmrd
+
+◉ *DIALOGAR CON EL BOT*
+  ║
+  ╠ ○  ${prefijo}bot on
+  ╚ ○  ${prefijo}bot off
 
 *VAMOS MIERDAAA!!*  
  `;

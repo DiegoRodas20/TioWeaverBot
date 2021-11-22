@@ -30,6 +30,10 @@ ESTOY EN DESARROLLO MI REY 🙈
 ◉ *CREAR STICKERS*
   ║
   ╚ ○  ${prefijo}sticker
+
+◉ *YOUTUBE A MP3*
+  ║
+  ╚ ○  ${prefijo}play
  `;
 
   return mensaje;

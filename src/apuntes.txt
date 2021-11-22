@@ -50,3 +50,28 @@ https://graph.facebook.com/102207198205289/subscribed_apps?subscribed_fields=liv
         //     cliente.sendMessage(grupoGeneral, req.embed[0].description);
         //     cliente.sendMessage(grupoProgra, req.embed[0].description);
         // }
+
+    // const listener = app.listen(port, () => {
+//     console.log("Escuchando peticiones en el puerto "+ listener.address().port);
+// });
+
+// app.post('/dialogflow/webhook', express.json(), (req, res) => {
+
+//     const agent = new WebhookClient({ request: req, response: res });
+//     // console.log('Dialogflow Request headers: ' + JSON.stringify(req.headers));
+//     // console.log('Dialogflow Request body: ' + JSON.stringify(req.body));
+
+//     function ProbandoWebhook(agent) {
+//         agent.add(`Estoy enviando esta respùesta desde el webhook`);
+//         console.log(JSON.stringify(req.body.queryResult.fulfillmentText))
+//     }
+
+//     let intentMap = new Map();
+//     intentMap.set('ProbandoWebhook', ProbandoWebhook);
+
+//     agent.handleRequest(intentMap);
+// })
+
+            // else if (msg.body.includes(`${prefijo}`)) {
+            //     cliente.sendMessage(msg.from, '*La opción aun no se encuentra implementada o no escribiste bien el comando, intentalo denuevo!!*');
+            // }
