@@ -18,14 +18,11 @@ ESTOY EN DESARROLLO MI REY 🙈
   ╠ ○  ${prefijo}comandos
   ╠ ○  ${prefijo}grupos
   ╠ ○  ${prefijo}stream
-  ╠ ○  ${prefijo}bot
-  ╠ ○  ${prefijo}buenosdias
-  ╚ ○  ${prefijo}motivacion
+  ╚ ○  ${prefijo}bot
 
 ◉ *UDEMY ʕ•́ᴥ•̀ʔっ*
   ║
-  ╠ ○  ${prefijo}cuenta
-  ╚ ○  ${prefijo}cursos
+  ╚ ○  ${prefijo}cuenta
 
 ◉ *CREAR STICKERS*
   ║
@@ -34,6 +31,15 @@ ESTOY EN DESARROLLO MI REY 🙈
 ◉ *YOUTUBE A MP3*
   ║
   ╚ ○  ${prefijo}play
+
+◉ *AUDIOS*
+  ║
+  ╠ ○  ${prefijo}buenosdias
+  ╠ ○  ${prefijo}motivacion
+  ╠ ○  ${prefijo}cholasdemierda
+  ╠ ○  ${prefijo}doscositasnoma
+  ╠ ○  ${prefijo}crag
+  ╚ ○  ${prefijo}vamosmierda
  `;
 
   return mensaje;

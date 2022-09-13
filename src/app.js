@@ -1,8 +1,9 @@
 const express = require('express');
 const socketIO = require('socket.io');
 const http = require('http');
+const fs = require('fs');
 const path = require('path');
-const axios = require('axios');
+const axios = require('axios').default
 
 // Server
 const app = express();
@@ -13,10 +14,11 @@ const port = process.env.PORT || 3000;
 // APIS Y LIBRERIAS
 const { Client, MessageMedia } = require('whatsapp-web.js');
 const pornhub = require('@justalk/pornhub-api');
+const xvideos = require('@rodrigogs/xvideos');
+
 const { fetchJson } = require('../lib/fetcher')
 const { getBuffer } = require('../lib/functions')
 const qrcode = require('qrcode-terminal')
-const fs = require('fs');
 const SESSION_FILE_PATH = './session.json';
 
 // DialogFlow
@@ -54,7 +56,7 @@ const { java } = require('./app/grupoprogramacion/java')
 // Variables Globales
 var prefijo = '*';
 var numeroEstado = 0;
-const msg = "BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ"
+const msg = "*BOT ACTIVO CONCHASUMARE, VAMOOOS MIERDAAA!! ʕ•́ᴥ•̀ʔっ*"
 const grupoGeneral = '51930360511-1604634954@g.us';
 const grupoProgra = '51930360511-1615519188@g.us';
 let sessionData;
@@ -148,18 +150,21 @@ const cliente = new Client({
     session: sessionData,
     puppeteer: {
         headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process', // <- this one doesn't works in Windows
-            '--disable-gpu'
-        ],
+        // args: [
+        //     '--no-sandbox',
+        //     '--disable-setuid-sandbox',
+        //     '--disable-dev-shm-usage',
+        //     '--disable-accelerated-2d-canvas',
+        //     '--no-first-run',
+        //     '--no-zygote',
+        //     '--single-process', // <- this one doesn't works in Windows
+        //     '--disable-gpu'
+        // ],
+        executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     },
+
 });
+
 
 cliente.initialize();
 
@@ -173,6 +178,7 @@ function startBot() {
     cliente.on('ready', () => {
         console.log('El Cliente esta listo')
 
+        // Grupo General
         cliente.sendMessage(grupoGeneral, msg).then(Response => {
             if (Response.id.fromMe) {
                 console.log('El mensaje fue enviado al grupo general')
@@ -180,7 +186,9 @@ function startBot() {
         })
 
         cliente.sendMessage(grupoGeneral, menuPrincipal(prefijo));
+        cliente.sendMessage(grupoGeneral, '*A LEVANTARSE CARAJO!!*');
 
+        // Grupo Programacion
         cliente.sendMessage(grupoProgra, msg).then(Response => {
             if (Response.id.fromMe) {
                 console.log('El mensaje fue enviado al grupo de programación')
@@ -188,6 +196,7 @@ function startBot() {
         })
 
         cliente.sendMessage(grupoProgra, menuProgramacion(prefijo));
+        cliente.sendMessage(grupoProgra, '*A LEVANTARSE CARAJO!!*');
 
     })
 
@@ -211,19 +220,21 @@ function startBot() {
 
             const user = await cliente.getContactById(per.recipientIds[0]);
 
-            const media = MessageMedia.fromFilePath('src/assets/audio/bienvenido.mp3');
-            var mensaje = `*HOLAAAA @${user.id.user}! ¿COMO ESTAS MI REY? 😃* \n\n*Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams mi rey.*\n\n*VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!*`
+            let media = await MessageMedia.fromUrl('https://bit.ly/33G933G', { unsafeMime: true });
+
+            var mensaje = `*HOLAAAA @${user.id.user}! ¿COMO ESTAS REY? 😃* \n\n*Bienvenido(a) a la Weaver Armada, recuerda leer las reglas del grupo y apoyar en todos los Streams hijo de perra!!*\n\n*VAMOOOS MIERDAAA QUE ACA SOMOS UNA FAMILIA CARAJO!!*`
 
             cliente.sendMessage(per.id.remote, mensaje, { mentions: [user] });
             cliente.sendMessage(per.id.remote, media);
         }
     })
 
-    cliente.on('group_leave', per => {
+    cliente.on('group_leave', async (per) => {
 
         if (per.id.remote === grupoGeneral || per.id.remote === grupoProgra) {
 
-            const media = MessageMedia.fromFilePath('src/assets/audio/adios.mp3');
+
+            let media = await MessageMedia.fromUrl('https://bit.ly/3ny6FTO', { unsafeMime: true });
             var mensaje = `*Hasta luego conchatumare hijo de las mil perras, tu vieja kchera emolientera!!*`
 
             cliente.sendMessage(per.id.remote, mensaje);
@@ -273,24 +284,175 @@ function startBot() {
 
             }
 
+            // Audios por Bitly
+
             else if (msg.body === `${prefijo}buenosdias`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
-                cliente.sendMessage(msg.from, media);
+                let media = await MessageMedia.fromUrl('https://bit.ly/3IhxSC9', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            else if (msg.body === `${prefijo}cholasdemierda`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/350uRrt', { unsafeMime: true });
+
+                msg.reply(media)
             }
 
             else if (msg.body === `${prefijo}motivacion`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
-                cliente.sendMessage(msg.from, media);
+                let media = await MessageMedia.fromUrl('https://bit.ly/3tFHFOp', { unsafeMime: true });
+
+                msg.reply(media)
             }
 
-            else if (msg.body === `${prefijo}vamosmrd`) {
+            else if (msg.body === `${prefijo}vamosmierda`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/vamosmrd.mp3`);
-                cliente.sendMessage(msg.from, media);
+                let media = await MessageMedia.fromUrl('https://bit.ly/3twfWQ1', { unsafeMime: true });
+
+                msg.reply(media)
             }
 
+            else if (msg.body === `${prefijo}doscositasnoma`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/3IuICxd', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            else if (msg.body === `${prefijo}crag`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/3fx8yeO', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            // Prueba
+            else if (msg.body.includes(`${prefijo}xvideos`)) {
+
+                if (msg.body === `${prefijo}xvideos`) {
+                    msg.reply(`*Busca bien pues hijo de perra*\n\n➜ *Ejemplo:* *porno Asiaticas`)
+                }
+
+                else {
+                    msg.reply(`*Estoy buscando tu porno, espera un momento porfavor* 💦`);
+
+                    try {
+
+                        const i = Math.floor(Math.random() * (20 - 1)) + 1;
+                        const categoria = msg.body.slice(6)
+
+                        const videos = await xvideos.videos.search({ k: categoria, page: i });
+                        const data = await xvideos.videos.details(videos.videos[i]);
+
+                        let videoInfo = `*Video Encontrado* 😄\n\n➜ *Título:* ${data.title}\n➜ *Fuente:* ${data.url}\n\n*VAMOS MIERDA!!*`
+                        msg.reply(videoInfo);
+
+                        let image = await MessageMedia.fromUrl(data.image, { unsafeMime: true });
+                        msg.reply(image)
+
+                        let url = data.files.high
+                        let fileName = `prueba.mp4`
+
+                        await downloadFile(url, 'download', fileName)
+
+                        const sendVideo = () =>
+                            new Promise(
+                                function (resolve, reject) {
+                                    setTimeout(async () => {
+                                        const media = MessageMedia.fromFilePath(`src/download/${fileName}`);
+                                        await cliente.sendMessage(msg.from, media);
+                                        console.log('VIDEO ENVIADO')
+                                    }, 10000)
+                                })
+
+                        sendVideo().then(() => console.log('paso'))
+
+                        function deleteVideo() {
+                            fs.unlinkSync('C:/Users/diego/Desktop/TioWeaverBot/src/download/prueba.mp4')
+                            console.log('VIDEO ELIMINADO')
+                        }
+
+
+                        // setTimeout(() => {
+                        //     const media = MessageMedia.fromFilePath(`src/download/${fileName}`);
+                        //     cliente.sendMessage(msg.from, media);
+                        //     console.log('10 SEGUNDOS')
+                        // }, 10000).then(fs.unlinkSync('C:/Users/diego/Desktop/TioWeaverBot/src/download/prueba.mp4'))
+
+                    }
+                    catch (exception) {
+                        msg.reply(`*Ha ocurrido un error, perdoname hijo de perra* 😥`)
+                    }
+                }
+
+
+                // const fresh = await xvideos.videos.fresh({ page: 1 });
+
+                // const videos = await xvideos.videos.details({ k: 'public', page: 5 });
+
+                // const data = await xvideos.videos.details(fresh.videos[8]);
+
+                // console.log(data)
+
+                // let videoInfo = `*Video Encontrado* 😄\n\n➜ *Título:* ${data.title}\n➜ *Fuente:* ${data.url}\n\n*VAMOS MIERDA!!*`
+                // msg.reply(videoInfo);
+
+                // let image = await MessageMedia.fromUrl(data.image, { unsafeMime: true });
+                // msg.reply(image)
+
+                // let url = data.files.high
+                // let fileName = `prueba.mp4`
+
+                // await downloadFile(url, 'download', fileName)
+
+                // setTimeout(() => {
+                //     const media = MessageMedia.fromFilePath(`src/download/${fileName}`);
+                //     cliente.sendMessage(msg.from, media);
+                //     console.log('PASO METODO')
+                // }, 10000)
+
+                // fs.unlinkSync()
+
+            }
+
+            else if (msg.body === `${prefijo}prueba`) {
+
+                try {
+                    const media = MessageMedia.fromFilePath(`src/download/prueba.mp4`);
+                    cliente.sendMessage(msg.from, media);
+                    console.log('PASO METODO')
+                }
+                catch (e) {
+                    console.log(e)
+                    console.log('NO PASO METODO')
+                }
+
+            }
+
+            else if (msg.body.includes(`${prefijo}pornhub`)) {
+
+                if (msg.body === `${prefijo}porno`) {
+                    msg.reply(`*Busca bien pues hijo de perra*\n\n➜ *Ejemplo:* *porno Asiaticas`)
+                }
+                else {
+                    msg.reply(`*Estoy buscando tu porno, espera un momento porfavor* 💦`);
+                    try {
+                        const i = Math.floor(Math.random() * (20 - 1)) + 1;
+                        const categoria = msg.body.slice(6)
+                        const video = await pornhub.search(categoria, ["title", "link", "premium", "hd"]);
+                        const linkVideo = video.results[i].link
+
+                        msg.reply(`*Toma mi rey, que lo disfrutes* 😈\n\n➜ *Link:* ${linkVideo}`)
+                    }
+                    catch (exception) {
+                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                    }
+                }
+            }
+
+            // Comandos Etiquetar
             else if (msg.body === `${prefijo}all`) {
 
                 const authorId = msg.author || message.from;
@@ -305,7 +467,7 @@ function startBot() {
 
                     for (let participant of chat.participants) {
                         if (participant.id._serialized === authorId && !participant.isAdmin) {
-                            msg.reply(`❌ El comando solo puede ser usado por admins ❌`);
+                            msg.reply(`❌ *EL COMANDO SOLO PUEDE SER USADO POR ADMINS* ❌`);
                             isAdmin = false
                             break;
                         }
@@ -388,36 +550,6 @@ function startBot() {
                 }
             }
 
-            else if (msg.body.includes(`${prefijo}porno`)) {
-
-                if (msg.body === `${prefijo}porno`) {
-                    msg.reply(`*Busca bien pues hijo de perra*\n\n➜ *Ejemplo:* *porno Asiaticas`)
-                }
-                else {
-                    msg.reply(`*Estoy buscando tu porno, espera un momento porfavor* 💦`);
-                    try {
-                        const i = Math.floor(Math.random() * (20 - 1)) + 1;
-                        const categoria = msg.body.slice(6)
-                        const video = await pornhub.search(categoria, ["title", "link", "premium", "hd"]);
-                        const linkVideo = video.results[i].link
-
-                        msg.reply(`*Toma mi rey, que lo disfrutes* 😈\n\n➜ *Link:* ${linkVideo}`)
-                    }
-                    catch (exception) {
-                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
-                    }
-                }
-            }
-
-            // else if (msg.body.includes(`${prefijo}pp`)) {
-
-            //     let word = msg.body.slice(3)
-
-            //     msg.reply(`${word}`)
-            //     msg.reply(`${word.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()}`)
-
-            // }
-
             // else if (msg.body === `${prefijo}bot on`) {
             //     msg.reply(`*El bot se encuentra encendido, puedes dialogar con el.*`);
             //     numeroEstado = 1;
@@ -483,20 +615,53 @@ function startBot() {
 
             }
 
+            // Audios por Bitly
+
             else if (msg.body === `${prefijo}buenosdias`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/buenosdias.mp3`);
-                cliente.sendMessage(msg.from, media);
+                let media = await MessageMedia.fromUrl('https://bit.ly/3IhxSC9', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            else if (msg.body === `${prefijo}cholasdemierda`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/350uRrt', { unsafeMime: true });
+
+                msg.reply(media)
             }
 
             else if (msg.body === `${prefijo}motivacion`) {
 
-                const media = MessageMedia.fromFilePath(`src/assets/audio/motivacion.mp3`);
-                cliente.sendMessage(msg.from, media);
+                let media = await MessageMedia.fromUrl('https://bit.ly/3tFHFOp', { unsafeMime: true });
+
+                msg.reply(media)
             }
 
+            else if (msg.body === `${prefijo}vamosmierda`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/3twfWQ1', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            else if (msg.body === `${prefijo}doscositasnoma`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/3IuICxd', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+            else if (msg.body === `${prefijo}crag`) {
+
+                let media = await MessageMedia.fromUrl('https://bit.ly/3fx8yeO', { unsafeMime: true });
+
+                msg.reply(media)
+            }
+
+
             else if (msg.body === `${prefijo}cuenta`) {
-                console.log(msg)
+
                 cliente.sendMessage(msg.from, cuentaProgramacion(prefijo));
             }
 
@@ -515,7 +680,10 @@ function startBot() {
 
                     try {
                         let music = msg.body.slice(6)
-                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3/2?apikey=tioweaverbot&q=${music}`)
+                        let musicword = music.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase()
+
+                        // API 1
+                        let data = await fetchJson(`https://api.zeks.me/api/ytplaymp3?apikey=tioweaverbot&q=${musicword}`)
 
                         let musicSize = data.result.size
                         let sizeArray = musicSize.split(' ');
@@ -527,7 +695,7 @@ function startBot() {
                             let musicInfo = `*Canción Encontrada* 😄\n\n➜ *Título:* ${data.result.title}\n➜ *Fuente:* ${data.result.source}\n➜ *Tamaño:* ${data.result.size}\n\n*VAMOS MIERDA!!*`
                             msg.reply(musicInfo);
 
-                            let media = await MessageMedia.fromUrl(data.result.link, { unsafeMime: true });
+                            let media = await MessageMedia.fromUrl(data.result.url_audio, { unsafeMime: true });
                             msg.reply(media);
                         }
                         else {
@@ -535,7 +703,7 @@ function startBot() {
                         }
                     }
                     catch (exception) {
-                        msg.reply(`*Ha ocurrido un error, perdoneme mi amo* 😥`)
+                        msg.reply(`*Ha ocurrido un error, perdoname hijo de perra* 😥`)
                     }
 
 
@@ -620,3 +788,25 @@ const detectIntent = async (languageCode, queryText, sessionId, msg) => {
     };
 }
 
+const downloadFile = async (fileUrl, downloadFolder, fileName) => {
+
+    // The path of the downloaded file on our machine
+    const localFilePath = path.resolve(__dirname, downloadFolder, fileName);
+
+    try {
+        const response = await axios({
+            method: 'GET',
+            url: fileUrl,
+            responseType: 'stream',
+        });
+        const w = response.data.pipe(fs.createWriteStream(localFilePath));
+
+        w.on('finish', () => {
+            console.log('Successfully downloaded file!');
+        });
+    } catch (err) {
+        // throw new Error(err);
+
+        console.log(err)
+    }
+};

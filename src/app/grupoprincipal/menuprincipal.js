@@ -34,15 +34,19 @@ const menuPrincipal = (prefijo) => {
   ║
   ╚ ○  ${prefijo}play
 
-◉ *PORN HUB*
+◉ *PORNO*
   ║
-  ╚ ○  ${prefijo}porno
+  ╠ ○  ${prefijo}xvideos
+  ╚ ○  ${prefijo}pornhub
 
 ◉ *AUDIOS*
   ║
   ╠ ○  ${prefijo}buenosdias
   ╠ ○  ${prefijo}motivacion
-  ╚ ○  ${prefijo}vamosmrd
+  ╠ ○  ${prefijo}cholasdemierda
+  ╠ ○  ${prefijo}doscositasnoma
+  ╠ ○  ${prefijo}crag
+  ╚ ○  ${prefijo}vamosmierda
 
 ◉ *DIALOGAR CON EL BOT*
   ║

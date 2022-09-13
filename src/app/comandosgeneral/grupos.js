@@ -5,13 +5,10 @@ var mensaje = `
 ⌜  *𝑊𝐸𝐴𝑉𝐸𝑅 𝐴𝑅𝑀𝐴𝐷𝐴* ⌟        
                                              
 ◉ 🔞  Grupo general 🔞                        
- ╚ https://bit.ly/3jWrNSe         
+ ╚ https://bit.ly/3rpivRk        
   
 ◉ 💻 Grupo de Programación 💻   
- ╚ https://bit.ly/3yYaaWl        
-           
-◉ ⚽ Grupo de Peloteo ⚽        
- ╚ https://bit.ly/3E41tgV         
+ ╚ https://bit.ly/3fAtVMx       
 
 `
 return mensaje;
